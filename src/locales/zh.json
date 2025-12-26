@@ -100,7 +100,11 @@
                 "desc": "将打开默认浏览器进行 Google 登录授权，自动获取并保存 Token。",
                 "btn_start": "开始 OAuth 授权",
                 "btn_waiting": "正在等待授权...",
-                "copy_link": "复制授权链接"
+                "btn_finish": "我已授权，继续",
+                "copy_link": "复制授权链接",
+                "copied": "已复制",
+                "link_label": "授权链接",
+                "link_click_to_copy": "点击复制"
             },
             "token": {
                 "label": "Refresh Token",

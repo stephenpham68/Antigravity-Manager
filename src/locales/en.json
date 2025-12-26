@@ -99,7 +99,11 @@
                 "desc": "Opens default browser for Google login to auto-fetch and save Token.",
                 "btn_start": "Start OAuth",
                 "btn_waiting": "Waiting for auth...",
-                "copy_link": "Copy Auth Link"
+                "btn_finish": "I already authorized",
+                "copy_link": "Copy Auth Link",
+                "copied": "Copied",
+                "link_label": "Authorization URL",
+                "link_click_to_copy": "Click to copy"
             },
             "token": {
                 "label": "Refresh Token",

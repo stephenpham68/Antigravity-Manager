@@ -89,7 +89,9 @@ pub fn run() {
             commands::load_config,
             commands::save_config,
             // 新增命令
+            commands::prepare_oauth_url,
             commands::start_oauth_login,
+            commands::complete_oauth_login,
             commands::cancel_oauth_login,
             commands::import_v1_accounts,
             commands::import_from_db,

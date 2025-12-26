@@ -20,6 +20,7 @@ interface AccountState {
 
     // 新增 actions
     startOAuthLogin: () => Promise<void>;
+    completeOAuthLogin: () => Promise<void>;
     cancelOAuthLogin: () => Promise<void>;
     importV1Accounts: () => Promise<void>;
     importFromDb: () => Promise<void>;
@@ -138,6 +139,18 @@ export const useAccountStore = create<AccountState>((set, get) => ({
         set({ loading: true, error: null });
         try {
             await accountService.startOAuthLogin();
+            await get().fetchAccounts();
+            set({ loading: false });
+        } catch (error) {
+            set({ error: String(error), loading: false });
+            throw error;
+        }
+    },
+
+    completeOAuthLogin: async () => {
+        set({ loading: true, error: null });
+        try {
+            await accountService.completeOAuthLogin();
             await get().fetchAccounts();
             set({ loading: false });
         } catch (error) {

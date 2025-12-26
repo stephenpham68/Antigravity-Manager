@@ -44,7 +44,7 @@ By leveraging this app, you can transform common Web Sessions (Google/Anthropic)
 *   **Active Account Snapshot**: Visually displays the specific quota percentage and the last synchronization time of the currently active account.
 
 ### 2. 🔐 Powerful Account Manager
-*   **OAuth 2.0 Auto Authorization**: Integrated browser automation flow. Simply log in to your Google account, and the app will automatically extract and persist the Refresh Token.
+*   **OAuth 2.0 Authorization (Auto/Manual)**: Pre-generates a copyable authorization URL so you can finish auth in any browser; after the callback, the app auto-completes and saves the account (use “I already authorized, continue” if needed).
 *   **Multi-dimensional Import**: Supports single token entry, JSON batch import, and automatic hot migration from V1 legacy databases.
 *   **Gateway-level Views**: Supports switching between "List" and "Grid" views. Provides 403 Forbidden detection, automatically marking and skipping accounts with permission anomalies.
 
@@ -121,6 +121,14 @@ sudo xattr -rd com.apple.quarantine "/Applications/Antigravity Tools.app"
 ```
 
 ## 🔌 Quick Integration Examples
+
+### 🔐 OAuth Authorization Flow (Add Account)
+1. Go to `Accounts` → `Add Account` → `OAuth`.
+2. The dialog pre-generates an authorization URL before you click any button. Click the URL to copy it to the system clipboard, then open it in the browser you prefer and complete authorization.
+3. After consent, the browser opens a local callback page and shows “✅ Authorized successfully!”.
+4. The app automatically continues the flow and saves the account; if it doesn’t, click “I already authorized, continue” to finish manually.
+
+> Note: the auth URL contains a one-time local callback port. Always use the latest URL shown in the dialog. If the app isn’t running or the dialog is closed during auth, the browser may show `localhost refused connection`.
 
 ### How to use with Claude Code CLI?
 1. Start Antigravity service in the "API Proxy" tab.

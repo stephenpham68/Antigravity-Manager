@@ -69,6 +69,21 @@ export async function startOAuthLogin(): Promise<Account> {
     }
 }
 
+export async function completeOAuthLogin(): Promise<Account> {
+    ensureTauriEnvironment();
+    try {
+        return await invoke('complete_oauth_login');
+    } catch (error) {
+        if (typeof error === 'string') {
+            if (error.includes('Refresh Token') || error.includes('refresh_token')) {
+                throw error;
+            }
+            throw `OAuth 授权失败: ${error}`;
+        }
+        throw error;
+    }
+}
+
 export async function cancelOAuthLogin(): Promise<void> {
     ensureTauriEnvironment();
     return await invoke('cancel_oauth_login');
