@@ -8,7 +8,7 @@
   <p>Seamlessly proxy Gemini & Claude. OpenAI-Compatible. Privacy First.</p>
   
   <p>
-    <a href="https://github.com/lbjlaq/Antigravity-Manager">
+    <a href="https://github.com/stephenpham68/Antigravity-Manager">
       <img src="https://img.shields.io/badge/Version-3.3.15-blue?style=flat-square" alt="Version">
     </a>
     <img src="https://img.shields.io/badge/Tauri-v2-orange?style=flat-square" alt="Tauri">
@@ -116,7 +116,7 @@ brew install --cask --no-quarantine antigravity-tools
 ```
 
 ### Option B: Manual Download
-Download from [GitHub Releases](https://github.com/lbjlaq/Antigravity-Manager/releases):
+Download from [GitHub Releases](https://github.com/stephenpham68/Antigravity-Manager/releases):
 *   **macOS**: `.dmg` (Universal, Apple Silicon & Intel)
 *   **Windows**: `.msi` or portable `.zip`
 *   **Linux**: `.deb` or `AppImage`
@@ -458,7 +458,7 @@ print(response.choices[0].message.content)
         - **Protocol & Router Expansion**: Native support for OpenAI, Anthropic (Claude Code), and Gemini protocols with high-precision Model Router.
         - **Multimodal Optimization**: Deep adaptation for Imagen 3 with 100MB payload capacity and aspect ratio controls.
         - **Global Upstream Proxy**: Centralized request management supporting HTTP/SOCKS5 with hot-reloading.
-    *   See [Releases](https://github.com/lbjlaq/Antigravity-Manager/releases) for earlier history.
+    *   See [Releases](https://github.com/stephenpham68/Antigravity-Manager/releases) for earlier history.
 
 ## 👥 Contributors
 

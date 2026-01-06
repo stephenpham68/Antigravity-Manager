@@ -7,7 +7,7 @@
   <p>不仅仅是账号管理，更是打破 API 调用壁垒的终极解决方案。</p>
   
   <p>
-    <a href="https://github.com/lbjlaq/Antigravity-Manager">
+    <a href="https://github.com/stephenpham68/Antigravity-Manager">
       <img src="https://img.shields.io/badge/Version-3.3.15-blue?style=flat-square" alt="Version">
     </a>
     <img src="https://img.shields.io/badge/Tauri-v2-orange?style=flat-square" alt="Tauri">
@@ -116,7 +116,7 @@ brew install --cask --no-quarantine antigravity-tools
 ```
 
 ### 选项 B: 手动下载
-前往 [GitHub Releases](https://github.com/lbjlaq/Antigravity-Manager/releases) 下载对应系统的包：
+前往 [GitHub Releases](https://github.com/stephenpham68/Antigravity-Manager/releases) 下载对应系统的包：
 *   **macOS**: `.dmg` (支持 Apple Silicon & Intel)
 *   **Windows**: `.msi` 或 便携版 `.zip`
 *   **Linux**: `.deb` 或 `AppImage`

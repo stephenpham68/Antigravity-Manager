@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Save, Github, User, MessageCircle, ExternalLink, RefreshCw, Sparkles } from 'lucide-react';
+import { Save, Github, ExternalLink, RefreshCw, Sparkles, BookOpen, Terminal, Zap, Shield, Server, Code } from 'lucide-react';
 import { request as invoke } from '../utils/request';
 import { open } from '@tauri-apps/plugin-dialog';
 import { useConfigStore } from '../stores/useConfigStore';
@@ -14,7 +14,7 @@ function Settings() {
     const { config, loadConfig, saveConfig } = useConfigStore();
     const [activeTab, setActiveTab] = useState<'general' | 'account' | 'proxy' | 'advanced' | 'about'>('general');
     const [formData, setFormData] = useState<AppConfig>({
-        language: 'zh',
+        language: 'en',
         theme: 'system',
         auto_refresh: false,
         refresh_interval: 15,
@@ -41,7 +41,7 @@ function Settings() {
 
     // Update check state
     const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
-    const [updateInfo, setUpdateInfo] = useState<{
+    const [_updateInfo, setUpdateInfo] = useState<{
         hasUpdate: boolean;
         latestVersion: string;
         currentVersion: string;
@@ -227,25 +227,12 @@ function Settings() {
 
                 {/* 设置表单 */}
                 <div className="bg-white dark:bg-base-100 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-base-200">
-                    {/* 通用设置 */}
+                    {/* General Settings */}
                     {activeTab === 'general' && (
                         <div className="space-y-6">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-base-content">{t('settings.general.title')}</h2>
 
-                            {/* 语言选择 */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-900 dark:text-base-content mb-2">{t('settings.general.language')}</label>
-                                <select
-                                    className="w-full px-4 py-4 border border-gray-200 dark:border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-base-content bg-gray-50 dark:bg-base-200"
-                                    value={formData.language}
-                                    onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                                >
-                                    <option value="zh">简体中文</option>
-                                    <option value="en">English</option>
-                                </select>
-                            </div>
-
-                            {/* 主题选择 */}
+                            {/* Theme Selection */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-900 dark:text-base-content mb-2">{t('settings.general.theme')}</label>
                                 <select
@@ -270,7 +257,7 @@ function Settings() {
                                         try {
                                             await invoke('toggle_auto_launch', { enable: enabled });
                                             setFormData({ ...formData, auto_launch: enabled });
-                                            showToast(enabled ? '已启用开机自动启动' : '已禁用开机自动启动', 'success');
+                                            showToast(enabled ? 'Auto-launch enabled' : 'Auto-launch disabled', 'success');
                                         } catch (error) {
                                             showToast(`${t('common.error')}: ${error}`, 'error');
                                         }
@@ -574,129 +561,170 @@ function Settings() {
                         </div>
                     )}
                     {activeTab === 'about' && (
-                        <div className="flex flex-col h-full animate-in fade-in duration-500">
-                            <div className="flex-1 flex flex-col justify-center items-center space-y-8">
-                                {/* Branding Section */}
-                                <div className="text-center space-y-4">
-                                    <div className="relative inline-block group">
-                                        <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                        <div className="flex flex-col h-full animate-in fade-in duration-500 overflow-y-auto">
+                            {/* Header with Logo and Version */}
+                            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-base-300">
+                                <div className="flex items-center gap-4">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-blue-500/20 rounded-2xl blur-lg"></div>
                                         <img
-                                            src="/icon.png"
-                                            alt="Antigravity Logo"
-                                            className="relative w-24 h-24 rounded-3xl shadow-2xl transform group-hover:scale-105 transition-all duration-500 rotate-3 group-hover:rotate-6 object-cover bg-white dark:bg-black"
+                                            src="/logo.svg"
+                                            alt="G-ZERO Logo"
+                                            className="relative w-14 h-14 rounded-2xl shadow-lg"
                                         />
                                     </div>
-
                                     <div>
-                                        <h3 className="text-3xl font-black text-gray-900 dark:text-base-content tracking-tight mb-2">Antigravity Tools</h3>
-                                        <div className="flex items-center justify-center gap-2 text-sm">
-                                            <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium border border-blue-200 dark:border-blue-800">
-                                                v3.3.15
+                                        <h2 className="text-2xl font-bold text-gray-900 dark:text-base-content">Gravity Zero</h2>
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium text-xs">
+                                                v1.0.0
                                             </span>
-                                            <span className="text-gray-400 dark:text-gray-600">•</span>
-                                            <span className="text-gray-500 dark:text-gray-400">Professional Account Management</span>
+                                            <span className="text-gray-400">G-ZERO</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleCheckUpdate}
+                                    disabled={isCheckingUpdate}
+                                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white rounded-lg text-sm flex items-center gap-2"
+                                >
+                                    <RefreshCw className={`w-4 h-4 ${isCheckingUpdate ? 'animate-spin' : ''}`} />
+                                    {isCheckingUpdate ? t('settings.about.checking_update') : t('settings.about.check_update')}
+                                </button>
+                            </div>
+
+                            {/* Quick Start Guide */}
+                            <div className="space-y-6">
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-base-content flex items-center gap-2 mb-3">
+                                        <BookOpen className="w-5 h-5 text-blue-500" />
+                                        Quick Start Guide
+                                    </h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {/* Step 1 */}
+                                        <div className="p-4 bg-gray-50 dark:bg-base-200 rounded-xl border border-gray-100 dark:border-base-300">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">1</span>
+                                                <span className="font-medium text-gray-900 dark:text-base-content">Add Accounts</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Go to Accounts tab and add your Google accounts via OAuth or Refresh Token.</p>
+                                        </div>
+                                        {/* Step 2 */}
+                                        <div className="p-4 bg-gray-50 dark:bg-base-200 rounded-xl border border-gray-100 dark:border-base-300">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">2</span>
+                                                <span className="font-medium text-gray-900 dark:text-base-content">Start API Proxy</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Go to API Proxy tab and click "Start Service" to enable the local proxy.</p>
+                                        </div>
+                                        {/* Step 3 */}
+                                        <div className="p-4 bg-gray-50 dark:bg-base-200 rounded-xl border border-gray-100 dark:border-base-300">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">3</span>
+                                                <span className="font-medium text-gray-900 dark:text-base-content">Configure Client</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Set your AI client to use http://127.0.0.1:8045 as the API endpoint.</p>
+                                        </div>
+                                        {/* Step 4 */}
+                                        <div className="p-4 bg-gray-50 dark:bg-base-200 rounded-xl border border-gray-100 dark:border-base-300">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">4</span>
+                                                <span className="font-medium text-gray-900 dark:text-base-content">Start Using</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Use your favorite AI tools with automatic account rotation and quota management.</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Cards Grid - Now 3 columns */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl px-4">
-                                    {/* Author Card */}
-                                    <div className="bg-white dark:bg-base-100 p-4 rounded-2xl border border-gray-100 dark:border-base-300 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all group flex flex-col items-center text-center gap-3">
-                                        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                                            <User className="w-6 h-6 text-blue-500" />
+                                {/* Integration Examples */}
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-base-content flex items-center gap-2 mb-3">
+                                        <Terminal className="w-5 h-5 text-green-500" />
+                                        Integration Examples
+                                    </h3>
+                                    <div className="space-y-3">
+                                        {/* Claude Code CLI */}
+                                        <div className="p-4 bg-gray-900 dark:bg-gray-950 rounded-xl">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Code className="w-4 h-4 text-purple-400" />
+                                                <span className="text-sm font-medium text-gray-200">Claude Code CLI</span>
+                                            </div>
+                                            <pre className="text-xs text-green-400 font-mono overflow-x-auto">
+{`export ANTHROPIC_API_KEY="sk-gzero"
+export ANTHROPIC_BASE_URL="http://127.0.0.1:8045"
+claude`}
+                                            </pre>
                                         </div>
-                                        <div>
-                                            <div className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">{t('settings.about.author')}</div>
-                                            <div className="font-bold text-gray-900 dark:text-base-content">Ctrler</div>
+                                        {/* Python */}
+                                        <div className="p-4 bg-gray-900 dark:bg-gray-950 rounded-xl">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Code className="w-4 h-4 text-yellow-400" />
+                                                <span className="text-sm font-medium text-gray-200">Python (OpenAI SDK)</span>
+                                            </div>
+                                            <pre className="text-xs text-green-400 font-mono overflow-x-auto">
+{`client = openai.OpenAI(
+    api_key="sk-gzero",
+    base_url="http://127.0.0.1:8045/v1"
+)`}
+                                            </pre>
                                         </div>
                                     </div>
+                                </div>
 
-                                    {/* WeChat Card */}
-                                    <div className="bg-white dark:bg-base-100 p-4 rounded-2xl border border-gray-100 dark:border-base-300 shadow-sm hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all group flex flex-col items-center text-center gap-3">
-                                        <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                                            <MessageCircle className="w-6 h-6 text-green-500" />
+                                {/* Features */}
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-base-content flex items-center gap-2 mb-3">
+                                        <Zap className="w-5 h-5 text-yellow-500" />
+                                        Key Features
+                                    </h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        <div className="p-3 bg-gray-50 dark:bg-base-200 rounded-lg text-center">
+                                            <Server className="w-5 h-5 text-blue-500 mx-auto mb-1" />
+                                            <span className="text-xs text-gray-600 dark:text-gray-400">Multi-Protocol</span>
                                         </div>
-                                        <div>
-                                            <div className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">{t('settings.about.wechat')}</div>
-                                            <div className="font-bold text-gray-900 dark:text-base-content">Ctrler</div>
+                                        <div className="p-3 bg-gray-50 dark:bg-base-200 rounded-lg text-center">
+                                            <Shield className="w-5 h-5 text-green-500 mx-auto mb-1" />
+                                            <span className="text-xs text-gray-600 dark:text-gray-400">Auto Rotation</span>
+                                        </div>
+                                        <div className="p-3 bg-gray-50 dark:bg-base-200 rounded-lg text-center">
+                                            <Zap className="w-5 h-5 text-yellow-500 mx-auto mb-1" />
+                                            <span className="text-xs text-gray-600 dark:text-gray-400">Smart Caching</span>
+                                        </div>
+                                        <div className="p-3 bg-gray-50 dark:bg-base-200 rounded-lg text-center">
+                                            <RefreshCw className="w-5 h-5 text-purple-500 mx-auto mb-1" />
+                                            <span className="text-xs text-gray-600 dark:text-gray-400">Rate Limiting</span>
                                         </div>
                                     </div>
+                                </div>
 
-                                    {/* GitHub Card */}
+                                {/* Links */}
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-base-300">
+                                    <div className="flex gap-3">
+                                        <div className="px-3 py-1 bg-gray-100 dark:bg-base-200 rounded-lg text-xs font-medium text-gray-500">
+                                            Tauri v2
+                                        </div>
+                                        <div className="px-3 py-1 bg-gray-100 dark:bg-base-200 rounded-lg text-xs font-medium text-gray-500">
+                                            React 19
+                                        </div>
+                                        <div className="px-3 py-1 bg-gray-100 dark:bg-base-200 rounded-lg text-xs font-medium text-gray-500">
+                                            TypeScript
+                                        </div>
+                                    </div>
                                     <a
-                                        href="https://github.com/lbjlaq/Antigravity-Manager"
+                                        href="https://github.com/gzero/gravity-zero"
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="bg-white dark:bg-base-100 p-4 rounded-2xl border border-gray-100 dark:border-base-300 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all group flex flex-col items-center text-center gap-3 cursor-pointer"
+                                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                                     >
-                                        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                                            <Github className="w-6 h-6 text-gray-900 dark:text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">{t('settings.about.github')}</div>
-                                            <div className="flex items-center gap-1 font-bold text-gray-900 dark:text-base-content">
-                                                <span>{t('settings.about.view_code')}</span>
-                                                <ExternalLink className="w-3 h-3 text-gray-400" />
-                                            </div>
-                                        </div>
+                                        <Github className="w-4 h-4" />
+                                        <span>{t('settings.about.view_code')}</span>
+                                        <ExternalLink className="w-3 h-3" />
                                     </a>
                                 </div>
 
-                                {/* Tech Stack Badges */}
-                                <div className="flex gap-2 justify-center">
-                                    <div className="px-3 py-1 bg-gray-50 dark:bg-base-200 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-base-300">
-                                        Tauri v2
-                                    </div>
-                                    <div className="px-3 py-1 bg-gray-50 dark:bg-base-200 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-base-300">
-                                        React 19
-                                    </div>
-                                    <div className="px-3 py-1 bg-gray-50 dark:bg-base-200 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-base-300">
-                                        TypeScript
-                                    </div>
+                                <div className="text-center text-[10px] text-gray-300 dark:text-gray-600 pt-2">
+                                    {t('settings.about.copyright')}
                                 </div>
-
-                                {/* Check for Updates */}
-                                <div className="flex flex-col items-center gap-3">
-                                    <button
-                                        onClick={handleCheckUpdate}
-                                        disabled={isCheckingUpdate}
-                                        className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-gray-700 text-white rounded-lg transition-all flex items-center gap-2 shadow-sm hover:shadow-md disabled:cursor-not-allowed"
-                                    >
-                                        <RefreshCw className={`w-4 h-4 ${isCheckingUpdate ? 'animate-spin' : ''}`} />
-                                        {isCheckingUpdate ? t('settings.about.checking_update') : t('settings.about.check_update')}
-                                    </button>
-
-                                    {/* Update Status */}
-                                    {updateInfo && !isCheckingUpdate && (
-                                        <div className="text-center">
-                                            {updateInfo.hasUpdate ? (
-                                                <div className="flex flex-col items-center gap-2">
-                                                    <div className="text-sm text-orange-600 dark:text-orange-400 font-medium">
-                                                        {t('settings.about.new_version_available', { version: updateInfo.latestVersion })}
-                                                    </div>
-                                                    <a
-                                                        href={updateInfo.downloadUrl}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                        className="px-4 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded-lg transition-colors flex items-center gap-1.5"
-                                                    >
-                                                        {t('settings.about.download_update')}
-                                                        <ExternalLink className="w-3.5 h-3.5" />
-                                                    </a>
-                                                </div>
-                                            ) : (
-                                                <div className="text-sm text-green-600 dark:text-green-400 font-medium">
-                                                    ✓ {t('settings.about.latest_version')}
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="text-center text-[10px] text-gray-300 dark:text-gray-600 mt-auto pb-2">
-                                {t('settings.about.copyright')}
                             </div>
                         </div>
                     )}
